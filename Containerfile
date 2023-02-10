@@ -10,6 +10,8 @@ RUN apk add --no-cache \
       fcgiwrap \
       nginx
 
+RUN usermod -p '*' git
+
 ADD conf/service /etc/s6-overlay/s6-rc.d
 
 ENTRYPOINT ["/init"]
