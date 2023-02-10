@@ -1,0 +1,12 @@
+if -n { test -d /var/lib/git/.gitolite }
+with-contenv
+foreground {
+    importas gitolite_admin_key GITOLITE_ADMIN_KEY
+    redirfd -w 1 /var/lib/git/admin.pub
+    echo ${gitolite_admin_key}
+}
+export HOME /var/lib/git
+export USER git
+s6-setuidgid git
+foreground { git config --global init.defaultBranch master }
+gitolite setup -pk /var/lib/git/admin.pub
