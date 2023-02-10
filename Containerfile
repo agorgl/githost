@@ -10,7 +10,8 @@ RUN apk add --no-cache \
       fcgiwrap \
       nginx
 
-RUN usermod -p '*' git
+RUN usermod -p '*' git \
+ && chmod g+rX /var/lib/git/
 
 ADD conf/service /etc/s6-overlay/s6-rc.d
 
