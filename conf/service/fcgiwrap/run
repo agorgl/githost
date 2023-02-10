@@ -1,4 +1,5 @@
 #!/usr/bin/execlineb -P
 fdmove -c 2 1
+umask 0002
 s6-setuidgid fcgiwrap
 /usr/bin/fcgiwrap -s unix:/run/fcgiwrap/fcgiwrap.sock
