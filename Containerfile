@@ -5,6 +5,7 @@ RUN apk add --no-cache \
       shadow \
       openssh \
       git \
+      git-daemon \
       gitolite \
       cgit \
       fcgiwrap \
