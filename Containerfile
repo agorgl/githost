@@ -15,5 +15,6 @@ RUN usermod -p '*' git \
  && addgroup fcgiwrap git
 
 ADD conf/service /etc/s6-overlay/s6-rc.d
+ADD conf/nginx /etc/nginx
 
 ENTRYPOINT ["/init"]
