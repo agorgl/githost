@@ -16,5 +16,6 @@ RUN usermod -p '*' git \
 
 ADD conf/service /etc/s6-overlay/s6-rc.d
 ADD conf/nginx /etc/nginx
+ADD conf/cgit /etc
 
 ENTRYPOINT ["/init"]
