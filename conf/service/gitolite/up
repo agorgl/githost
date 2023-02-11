@@ -9,4 +9,6 @@ export HOME /var/lib/git
 export USER git
 s6-setuidgid git
 foreground { git config --global init.defaultBranch master }
-gitolite setup -pk /var/lib/git/admin.pub
+foreground { gitolite setup -pk /var/lib/git/admin.pub }
+foreground { sed -ri "s/(\\s*UMASK\\s*=>\\s*)[0-9]*/\\10027/" /var/lib/git/.gitolite.rc }
+chmod -R g+rX /var/lib/git/repositories
