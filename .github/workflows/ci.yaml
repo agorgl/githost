@@ -1,0 +1,50 @@
+name: ci
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # every day at midnight
+env:
+  IMAGE_NAME: ${{ github.event.repository.name }}
+  IMAGE_TAGS: latest
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  REGISTRY_USER: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ github.token }}
+
+jobs:
+  push-ghcr:
+    name: Build and push image
+    runs-on: ubuntu-22.04
+
+    steps:
+      # Checkout git repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Build image using buildah action
+      - name: Build container image
+        id: build_image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.IMAGE_TAGS }}
+          containerfiles: |
+            ./Containerfile
+          oci: true
+
+      # Push the image to GHCR (image registry)
+      - name: Push container image to GHCR
+        id: push_image
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build_image.outputs.image }}
+          tags: ${{ steps.build_image.outputs.tags }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          extra-args: |
+            --disable-content-trust
+
+      - name: Print outputs
+        run: |
+          echo "${{ toJSON(steps.push_image.outputs) }}"
