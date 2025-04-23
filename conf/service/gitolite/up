@@ -11,4 +11,5 @@ s6-setuidgid git
 foreground { git config --global init.defaultBranch master }
 foreground { gitolite setup -pk /var/lib/git/admin.pub }
 foreground { sed -ri "s/(\\s*UMASK\\s*=>\\s*)[0-9]*/\\10027/" /var/lib/git/.gitolite.rc }
+foreground { sed -ri "s/(\\s*GIT_CONFIG_KEYS\\s*=>\\s*)''/\\1'cgit\\..*'/" /var/lib/git/.gitolite.rc }
 chmod -R g+rX /var/lib/git/repositories
