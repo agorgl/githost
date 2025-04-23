@@ -1,2 +1,3 @@
 virtual-root=/
+enable-git-config=1
 scan-path=/var/lib/git/repositories/
